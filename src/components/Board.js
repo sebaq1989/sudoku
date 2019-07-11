@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 function Board(props) {
 
@@ -13,29 +13,48 @@ function Board(props) {
     // }
 
     return (
-        <div className="puzzleBoard">
+        < div className="puzzleBoard" >
 
-            {props.board.map((e, i) => {
-                return <div className="row{i} row" key={i}> {e.map((elem, index) => {
-                    if (elem === 0) {
+            {
+                props.board.map((e, i) => {
+                    return <div className="row{i} row" key={i}> {e.map((elem, index) => {
+                        let squareValue;
+                        let classes = '';
+
+                        let rowGrid = Math.floor(i / 3) * 3
+                        let colGrid = Math.floor(index / 3) * 3
+                        if (rowGrid === 0 && colGrid === 3) classes += 'shaded'
+                        if (rowGrid === 3 && colGrid === 0) classes += 'shaded'
+                        if (rowGrid === 3 && colGrid === 6) classes += 'shaded'
+                        if (rowGrid === 6 && colGrid === 3) classes += 'shaded'
+
+                        if (i === 2 || i === 5) classes += ' bottomBorder'
+                        if (index === 3 || index === 6) classes += ' leftBorder'
+
+                        if (elem.isEditable) {
+                            if (elem.value === 0) {
+                                squareValue = '';
+                                classes += ' emptySquare'
+                            } else {
+                                squareValue = elem.value;
+                            }
+                        } else {
+                            squareValue = elem.value;
+                        }
                         return <input
                             onChange={e => props.handleChangeSolution(e, index)}
-                            value=''
-                            className="emptySquare"
+                            className={classes}
+                            defaultValue={squareValue}
                             name={`${i}`}
                             key={`${i}${index}`}
                             type="text"
+                            readOnly={!elem.isEditable}
                         />
                     }
-                    return <input
-                        value={elem}
-                        name={`checkSolution[${i}][${index}]`}
-                        key={`${i}${index}`}
-                        type="text"
-                        readOnly />
-                })} </div>
-            })}
-        </div>
+                    )} </div>
+                })
+            }
+        </div >
     )
 }
 

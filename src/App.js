@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
+import SolvePuzzle from './components/SolvePuzzle';
 import ShowPuzzles from './components/ShowPuzzles';
 import './reset.css';
 import './App.css';
@@ -10,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <ShowPuzzles />
+        <SolvePuzzle />
       </div>
     );
   }

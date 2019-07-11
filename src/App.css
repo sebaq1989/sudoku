@@ -1,7 +1,7 @@
 body {
     display: flex;
     justify-content: center;
-    background-color: rgb(221, 218, 218);
+    background-color: rgb(228, 228, 228);
     overflow-x: hidden;
 }
 
@@ -47,9 +47,10 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgb(37, 37, 37);
-    border-radius: 7px;
+    border: 3px solid #1ABC9C;
+    border-radius: 2%;
     overflow: hidden;
+    color: #fff;
 }
 
 .puzzleBoard .row {
@@ -63,11 +64,27 @@ header {
 .row input {
     height: 4.5vw;
     width: 6vw;
+    min-height: 25px;
+    min-width: 30px;
     font-size: 3vw;
     text-align: center;
-    border: 1px solid rgb(192, 190, 190)
+    border: 1px solid rgb(15, 70, 60);
+    background-color: rgb(37, 37, 37);
+    color: #fff;
 }
 
-.emptySquare {
+.row .emptySquare {
     color: #1ABC9C;
+}
+
+.row .shaded {
+    background-color: rgb(53, 53, 53);
+}
+
+.row .leftBorder {
+    border-left: 2px solid rgb(19, 104, 88);
+}
+
+.row .bottomBorder {
+    border-bottom: 2px solid rgb(19, 104, 88);
 }
