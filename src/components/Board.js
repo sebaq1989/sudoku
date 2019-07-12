@@ -44,7 +44,7 @@ function Board(props) {
                         return <input
                             onChange={e => props.handleChangeSolution(e, index)}
                             className={classes}
-                            value={elem.value || squareValue === '' ? squareValue : elem === 0 ? '' : elem}
+                            {...props.displayOnly ? { 'value': squareValue } : { 'defaultValue': squareValue }}
                             name={`${i}`}
                             key={`${i}${index}`}
                             type="text"

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header() {
+function Header(props) {
     return (
         <header>
             <div className="headerWrapper">
@@ -8,8 +8,9 @@ function Header() {
                     {/* <img src="" alt="" /> */}
                     <h2>Su<span className="dank">dank</span>u</h2>
                 </div>
-                <div>
-                    {/* <img src="" alt="" /> */}
+                <div className="buttonWrapper">
+                    <button onClick={() => props.changeView('show')}>Puzzles</button>
+                    <button onClick={() => props.changeView('dashboard')}>Dashboard</button>
                 </div>
             </div>
         </header>

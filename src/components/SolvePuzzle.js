@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Board from './Board';
+import Modal from './Modal';
 
 class SolvePuzzle extends Component {
     constructor(props) {
@@ -9,14 +10,15 @@ class SolvePuzzle extends Component {
             puzzle: {
                 board: []
             },
-            solution: [[], [], [], [], [], [], [], [], []],
-            currentId: 1
+            solverModalOpen: false,
+            title: "Dope.",
+            message: "You nailed it! Try another puzzle...do it."
         }
     }
 
     componentDidMount() {
         console.log('mounted')
-        axios.get(`/api/puzzles/${this.state.currentId}`).then(response => {
+        axios.get(`/api/puzzles/${this.props.currentId}`).then(response => {
             let puzzleBoard = [[], [], [], [], [], [], [], [], []];
             response.data.board.map((e, i) => {
                 return e.map((element, index) => {
@@ -57,68 +59,91 @@ class SolvePuzzle extends Component {
                 return element = element.value
             })
         })
-        // console.log(testSolution)
-        console.log(this.validSolution(testSolution))
-    }
-
-    handlePrev = () => {
-        let prev;
-        if (this.state.currentId === 1) {
-            prev = this.state.puzzles.length;
-            this.setState({ currentId: prev })
+        if (this.validSolution(testSolution)) {
+            let solvedPuzzle = {
+                id: this.state.puzzle.id,
+                board: testSolution,
+                solved: true,
+                bookmarked: false
+            }
+            axios.post('/api/user', { solvedPuzzle }).then(response => {
+                this.props.changeView('dashboard');
+            })
+            this.setState({ solverModalOpen: true })
         } else {
-            this.setState({ currentId: this.state.currentId - 1 })
+            this.setState({ title: "Not Quite.", message: "Your solution isn't valid. Keep trying!", solverModalOpen: true })
         }
     }
 
-    sudokuSolver = (board) => {
-        console.log('run')
+    closeModal = () => {
+        this.setState({ solverModalOpen: false })
+    }
+
+    sudokuSolver = (puzzle) => {
+        let board = puzzle.map(e => e.map(a => a = a.value));
+        console.log(board)
         //keep track of the position of all '0' (empty) squares
         let ruledOutOptions;
         //keep track of all numbers that cant be the answer for any given empty square
-        let emptySquares = 1;
+        // let emptySquares = 1;
         //keep looping through the rest of the logic until we dont see any empty squares
-        while (emptySquares > 0) {
-            emptySquares = 0;
-            for (var row = 0; row < board.length; row++) {
-                for (var column = 0; column < board.length; column++) {
-                    let filledSquares = {};
-                    if (board[row][column] === 0) {
-                        for (var i = 0; i < 9; i++) {
-                            //check row for filled boxes
-                            if (board[row][i] > 0) {
-                                filledSquares[board[row][i]] = true;
-                            }
-                            //check column for filled boxes
-                            if (board[i][column] > 0) {
-                                filledSquares[board[i][column]] = true;
-                            }
+        // while (emptySquares > 0) {
+        // emptySquares = 0;
+        for (var row = 0; row < board.length; row++) {
+            for (var column = 0; column < board.length; column++) {
+                let filledSquares = {};
+                if (board[row][column] === 0) {
+                    for (var i = 0; i < 9; i++) {
+                        //check row for filled boxes
+                        if (board[row][i] > 0) {
+                            filledSquares[board[row][i]] = true;
                         }
-                        //check quadrant for filled boxes
-                        for (var quadrantRow = Math.floor(row / 3) * 3; quadrantRow < Math.floor(row / 3) * 3 + 3; quadrantRow++) {
-                            for (var quadrantCol = Math.floor(column / 3) * 3; quadrantCol < Math.floor(column / 3) * 3 + 3; quadrantCol++) {
-                                if (board[quadrantRow][quadrantCol] > 0) {
-                                    filledSquares[board[quadrantRow][quadrantCol]] = true;
-                                }
-                            }
-                        }
-                        //push the ruled out numbers into the array to keep track of numbers that cant be the answer for any given square
-                        ruledOutOptions = Object.keys(filledSquares).map(a => a * 1);
-                        if (ruledOutOptions.length === 8) {
-                            for (var missingNumber = 1; missingNumber < 10; missingNumber++) {
-                                if (ruledOutOptions.indexOf(missingNumber) < 0) {
-                                    console.log(missingNumber);
-                                    board[row][column] = missingNumber;
-                                }
-                            }
-                        } else {
-                            emptySquares++
+                        //check column for filled boxes
+                        if (board[i][column] > 0) {
+                            filledSquares[board[i][column]] = true;
                         }
                     }
+                    //check quadrant for filled boxes
+                    for (var quadrantRow = Math.floor(row / 3) * 3; quadrantRow < Math.floor(row / 3) * 3 + 3; quadrantRow++) {
+                        for (var quadrantCol = Math.floor(column / 3) * 3; quadrantCol < Math.floor(column / 3) * 3 + 3; quadrantCol++) {
+                            if (board[quadrantRow][quadrantCol] > 0) {
+                                filledSquares[board[quadrantRow][quadrantCol]] = true;
+                            }
+                        }
+                    }
+                    //push the ruled out numbers into the array to keep track of numbers that cant be the answer for any given square
+                    ruledOutOptions = Object.keys(filledSquares).map(a => a * 1);
+                    if (ruledOutOptions.length === 8) {
+                        for (var missingNumber = 1; missingNumber < 10; missingNumber++) {
+                            if (ruledOutOptions.indexOf(missingNumber) < 0) {
+                                console.log(missingNumber);
+                                board[row][column] = missingNumber;
+                                let puzzleBoard = [[], [], [], [], [], [], [], [], []];
+                                board.map((e, i) => {
+                                    return e.map((element, index) => {
+                                        if (element === 0) {
+                                            return puzzleBoard[i][index] = { value: 0, isEditable: true }
+                                        } else {
+                                            return puzzleBoard[i][index] = { value: element, isEditable: false }
+                                        }
+                                    })
+                                })
+                                this.setState({
+                                    puzzle: {
+                                        board: puzzleBoard
+                                    }
+                                })
+                                return;
+                            }
+                        }
+                    } else {
+                        // emptySquares++
+                    }
                 }
+                // }
             }
         }
-        return board;
+
     }
 
     validSolution = (board) => {
@@ -157,25 +182,33 @@ class SolvePuzzle extends Component {
     render() {
         console.log("PUZZLE BOARD", this.state.puzzle.board)
         console.log("sOLUTION", this.state.solution)
-        let { puzzle, solution } = this.state;
+        let { puzzle } = this.state;
         return (
 
-            <div>
+            <section className="solver">
+                {this.state.solverModalOpen &&
+                    <Modal
+                        className="modal"
+                        closeModal={this.closeModal}
+                        title={this.state.title}
+                        message={this.state.message}
+                    />
+                }
+                <div className="help-bookmark">
+                    <button onClick={() => this.sudokuSolver(this.state.puzzle.board)} id="helpMe">Help Me</button>
+                    <button id="bookmarkIt">Bookmark for Later</button>
+                </div>
                 <div className="solvePuzzle">
-                    <button onClick={this.handlePrev}>&lt;Prev</button>
                     <Board
                         displayOnly={false}
                         board={puzzle.board}
-                        solution={solution}
                         handleChangeSolution={this.handleChangeSolution}
                         id={puzzle.id}
                         key={puzzle.id}
                     />
-                    <button onClick={this.handleNext}>Next&gt;</button>
-
                 </div>
-                <button onClick={this.handleSubmit}>Check Solution!</button>
-            </div>
+                <button id="checkSolution" onClick={this.handleSubmit}>Check <br />My Solution</button>
+            </section>
         )
     }
 }

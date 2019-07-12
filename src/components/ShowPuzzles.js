@@ -6,8 +6,7 @@ class ShowPuzzles extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            puzzles: [{ board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }],
-            currentId: 1
+            puzzles: [{ board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }]
         }
     }
 
@@ -33,29 +32,33 @@ class ShowPuzzles extends Component {
     }
 
     handleNext = () => {
-        if (this.state.currentId === this.state.puzzles.length) {
-            this.setState({ currentId: 1 })
+        if (this.props.currentId === this.state.puzzles.length) {
+            this.props.changeId(1)
         } else {
-            this.setState({ currentId: this.state.currentId + 1 })
+            this.props.changeId(this.props.currentId + 1)
         }
     }
 
     handlePrevious = () => {
-        if (this.state.currentId === 1) {
-            this.setState({ currentId: this.state.puzzles.length })
+        if (this.props.currentId === 1) {
+            this.props.changeId(this.state.puzzles.length)
         } else {
-            this.setState({ currentId: this.state.currentId - 1 })
+            this.props.changeId(this.props.currentId - 1)
         }
+    }
+
+    handlePlay = () => {
+        this.props.changeView("solve")
     }
 
     render() {
         console.log(this.state.puzzles)
-        let { puzzles, currentId } = this.state
-        let puzzle = puzzles[currentId - 1]
+        let { puzzles } = this.state
+        let puzzle = puzzles[this.props.currentId - 1]
         let board = puzzle.board
         console.log(board)
         return (
-            <div className="showPuzzles">
+            <section className="showPuzzles">
 
                 <button className="buttonPrev" onClick={this.handlePrevious}>PREV</button>
                 <div className="puzzles">
@@ -65,11 +68,11 @@ class ShowPuzzles extends Component {
                         id={puzzle.currentId}
                         key={puzzle.currentId}
                     />
-                    <button id="playButton">Play Now</button>
+                    <button onClick={this.handlePlay} id="playButton">Play Now</button>
                 </div>
                 <button className="buttonNext" onClick={this.handleNext}>NEXT</button>
 
-            </div>
+            </section>
         )
     }
 }
