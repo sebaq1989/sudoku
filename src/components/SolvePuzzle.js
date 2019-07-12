@@ -61,6 +61,16 @@ class SolvePuzzle extends Component {
         console.log(this.validSolution(testSolution))
     }
 
+    handlePrev = () => {
+        let prev;
+        if (this.state.currentId === 1) {
+            prev = this.state.puzzles.length;
+            this.setState({ currentId: prev })
+        } else {
+            this.setState({ currentId: this.state.currentId - 1 })
+        }
+    }
+
     sudokuSolver = (board) => {
         console.log('run')
         //keep track of the position of all '0' (empty) squares
@@ -151,7 +161,8 @@ class SolvePuzzle extends Component {
         return (
 
             <div>
-                <div >
+                <div className="solvePuzzle">
+                    <button onClick={this.handlePrev}>&lt;Prev</button>
                     <Board
                         displayOnly={false}
                         board={puzzle.board}
@@ -160,6 +171,8 @@ class SolvePuzzle extends Component {
                         id={puzzle.id}
                         key={puzzle.id}
                     />
+                    <button onClick={this.handleNext}>Next&gt;</button>
+
                 </div>
                 <button onClick={this.handleSubmit}>Check Solution!</button>
             </div>

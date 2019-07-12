@@ -13,12 +13,12 @@ function Board(props) {
     // }
 
     return (
-        < div className="puzzleBoard" >
+        < div className="puzzleBoard" id={props.isEditable ? "solvePuzzle" : null} >
 
             {
                 props.board.map((e, i) => {
                     return <div className="row{i} row" key={i}> {e.map((elem, index) => {
-                        let squareValue;
+                        let squareValue = '';
                         let classes = '';
 
                         let rowGrid = Math.floor(i / 3) * 3
@@ -33,7 +33,6 @@ function Board(props) {
 
                         if (elem.isEditable) {
                             if (elem.value === 0) {
-                                squareValue = '';
                                 classes += ' emptySquare'
                             } else {
                                 squareValue = elem.value;
@@ -41,19 +40,21 @@ function Board(props) {
                         } else {
                             squareValue = elem.value;
                         }
+
                         return <input
                             onChange={e => props.handleChangeSolution(e, index)}
                             className={classes}
-                            defaultValue={squareValue}
+                            value={elem.value || squareValue === '' ? squareValue : elem === 0 ? '' : elem}
                             name={`${i}`}
                             key={`${i}${index}`}
                             type="text"
-                            readOnly={!elem.isEditable}
+                            readOnly={!elem.isEditable || props.displayOnly}
                         />
                     }
                     )} </div>
                 })
             }
+
         </div >
     )
 }

@@ -16,7 +16,7 @@ header {
     height: 80px;
     width: 100vw;
     background-color: rgb(37, 37, 37);
-    color: #fff;
+    color: rgb(228, 228, 228);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,37 +40,116 @@ header {
 }
 
 .puzzleBoard {
-    /* width: 47vw;
-    height: 47vw; */
     display: flex;
-    margin-top: 30px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 3px solid #1ABC9C;
-    border-radius: 2%;
+    border-top-right-radius: 2%;
+    border-top-left-radius: 2%;
     overflow: hidden;
-    color: #fff;
+    color: rgb(228, 228, 228);
+}
+
+.showPuzzles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80vw;
+}
+
+.showPuzzles .puzzleBoard {
+    margin-top: 2vw;
+}
+
+.showPuzzles button {
+    height: 5vw;
+    min-height: 40px;
+    width: 10vw;
+    border: none;
+    background-color: #1ABC9C;
+    color: rgb(37, 37, 37);
+    font-weight: bold;
+    font-size: calc(10px + 1.2vw);
+    margin-top: 0;
+}
+
+.buttonPrev {
+    text-align: right;
+    padding-right: 1vw;
+    -webkit-clip-path: polygon(25% 0%, 100% 1%, 100% 100%, 25% 100%, 0% 50%);
+    clip-path: polygon(25% 0%, 100% 1%, 100% 100%, 25% 100%, 0% 50%);
+    border-radius: 5px;
+    margin-bottom: 35px;
+}
+
+.buttonNext {
+    text-align: left;
+    padding-left: 1vw;
+    -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    border-radius: 5px;
+    margin-bottom: 35px;
+
+}
+
+.puzzles {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#playButton {
+    height: 7vh;
+    min-height: 40px;
+    width: 100%;
+    border: none;
+    background-color: #1ABC9C;
+    color: rgb(37, 37, 37);
+    font-weight: bold;
+    font-size: calc(10px + 1.2vw);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-top: 0;
+}
+
+.puzzle {
+    display: flex;
+    flex-direction: column;
+    justify-content: flext-end;
 }
 
 .puzzleBoard .row {
     /* height: 11%; */
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
 
 }
 
 .row input {
-    height: 4.5vw;
-    width: 6vw;
-    min-height: 25px;
-    min-width: 30px;
-    font-size: 3vw;
+    height: 4vw;
+    width: 5vw;
+    /* min-height: 37px;
+    min-width: 41px; */
+    font-size: 1.8vw;
+    font-size: calc(16px + 1.5vw);
     text-align: center;
     border: 1px solid rgb(15, 70, 60);
     background-color: rgb(37, 37, 37);
-    color: #fff;
+    color: rgb(228, 228, 228);
+}
+
+.solvePuzzle input {
+    height: 4.5vw;
+    width: 6vw;
+    font-size: 1vw;
+    text-align: center;
+    font-size: 3vw;
+    border: 1px solid rgb(15, 70, 60);
+    background-color: rgb(37, 37, 37);
+    color: rgb(228, 228, 228);
 }
 
 .row .emptySquare {
