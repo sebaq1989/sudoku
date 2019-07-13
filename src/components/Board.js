@@ -32,7 +32,7 @@ function Board(props) {
                         if (index === 3 || index === 6) classes += ' leftBorder'
 
                         if (elem.isEditable) {
-                            if (elem.value === 0) {
+                            if (elem.value === 0 || elem.edited) {
                                 classes += ' emptySquare'
                             } else {
                                 squareValue = elem.value;

@@ -14,7 +14,7 @@ class Dashboard extends Component {
     componentDidMount = () => {
         axios.get('/api/user').then(response => {
             let puzzlesArray = [...response.data];
-            console.log(response.data)
+            console.log(puzzlesArray)
             puzzlesArray.map((el, ind) => {
                 let puzzleBoard = [[], [], [], [], [], [], [], [], []];
                 el.board.map((e, i) => {
@@ -53,18 +53,23 @@ class Dashboard extends Component {
                     </button>
                 </section>
                 <section id="dashboard">
-                    {this.state.user.map(element => {
+                    {this.state.user.map((element, index) => {
                         return element[this.state.dashView] &&
                             (
-                                <div className="solved-bookmarked">
+                                <div key={Math.floor(Math.random() * 777)} className="solved-bookmarked">
                                     <Board
                                         displayOnly={true}
                                         board={element.board}
                                         id={element.id}
                                         key={element.id}
                                     />
-                                    <div className="dashboardContent">
-
+                                    <div key={Math.floor(Math.random() * 7777)} className="dashboardContent">
+                                        <h2>Bookmarked Puzzle #{index + 1}</h2>
+                                        <h4>{'Added on ' + element.date + ' at ' + element.time}</h4>
+                                        <div className="dashButtons">
+                                            <button>Solve it now</button>
+                                            <button>Remove bookmark</button>
+                                        </div>
                                     </div>
                                 </div>
                             )

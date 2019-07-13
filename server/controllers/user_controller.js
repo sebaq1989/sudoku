@@ -13,7 +13,9 @@ const user = [
             [0, 0, 0, 0, 8, 0, 0, 7, 9]
         ],
         "solved": true,
-        "bookmarked": true
+        "bookmarked": true,
+        "time": '2:53 PM',
+        "date": '07/12/2019'
     },
     {
         "id": 2,
@@ -29,7 +31,9 @@ const user = [
             [0, 0, 0, 0, 8, 0, 0, 7, 9]
         ],
         "solved": false,
-        "bookmarked": true
+        "bookmarked": true,
+        "time": '7:32 PM',
+        "date": '07/09/2019'
     },
     {
         "id": 3,
@@ -45,7 +49,9 @@ const user = [
             [0, 0, 0, 0, 8, 0, 0, 7, 9]
         ],
         "solved": true,
-        "bookmarked": false
+        "bookmarked": false,
+        "time": '4:07 AM',
+        "date": '07/11/2019'
     }
 ];
 
@@ -71,13 +77,15 @@ const deletePuzzle = (req, res) => {
 }
 
 const addPuzzle = (req, res) => {
-    let { board, id, solved, bookmarked } = req.body;
+    let { board, id, solved, bookmarked, time, date } = req.body;
     user.push({
         id,
         board,
         solved,
         bookmarked,
-        deletePuzzle
+        deletePuzzle,
+        time,
+        date
     })
     res.send(user)
 }

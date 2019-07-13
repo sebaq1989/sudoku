@@ -8,6 +8,7 @@ class SolvePuzzle extends Component {
         super(props);
         this.state = {
             puzzle: {
+                id: null,
                 board: []
             },
             solverModalOpen: false,
@@ -17,7 +18,6 @@ class SolvePuzzle extends Component {
     }
 
     componentDidMount() {
-        console.log('mounted')
         axios.get(`/api/puzzles/${this.props.currentId}`).then(response => {
             let puzzleBoard = [[], [], [], [], [], [], [], [], []];
             response.data.board.map((e, i) => {
@@ -31,6 +31,7 @@ class SolvePuzzle extends Component {
             })
             this.setState({
                 puzzle: {
+                    id: this.props.currentId,
                     board: puzzleBoard
                 }
             });
@@ -47,41 +48,51 @@ class SolvePuzzle extends Component {
         console.log(this.state.puzzle.board)
         let puzzleCopy = [...this.state.puzzle.board];
         puzzleCopy[+e.target.name][i].value = (e.target.value * 1);
-        // this.setState({ solution: puzzleCopy }, () => {
-        //     console.log('finished')
+        puzzleCopy[+e.target.name][i].edited = true;
+        // console.log("TTTTTTTTTTT", this.state.puzzle.board)
+        // this.setState({
+        //     puzzle: {
+        //         board: puzzleCopy
+        //     }
         // })
         // this.setState({ puzzle: { board: puzzleCopy } })
     }
 
     handleSubmit = () => {
+        let d = new Date();
+        let time = d.toLocaleTimeString();
+        let date = d.toLocaleDateString();
         let testSolution = this.state.puzzle.board.map((e, i) => {
             return e.map((element, index) => {
                 return element = element.value
             })
         })
         if (this.validSolution(testSolution)) {
-            let solvedPuzzle = {
+            const solvedPuzzle = {
                 id: this.state.puzzle.id,
                 board: testSolution,
                 solved: true,
-                bookmarked: false
+                bookmarked: false,
+                time,
+                date
             }
-            axios.post('/api/user', { solvedPuzzle }).then(response => {
-                this.props.changeView('dashboard');
+            axios.post('/api/user', solvedPuzzle).then(response => {
+                this.setState({ solverModalOpen: true })
             })
-            this.setState({ solverModalOpen: true })
+            // this.props.changeView('dashboard');
         } else {
             this.setState({ title: "Not Quite.", message: "Your solution isn't valid. Keep trying!", solverModalOpen: true })
         }
     }
 
-    closeModal = () => {
-        this.setState({ solverModalOpen: false })
+    closeModal = (completed) => {
+        this.setState({ solverModalOpen: false });
+        // completed && this.props.changeView('show');
     }
 
     sudokuSolver = (puzzle) => {
         let board = puzzle.map(e => e.map(a => a = a.value));
-        console.log(board)
+        console.log("kkkkkkkkkkkkk", this.state.puzzle.board)
         //keep track of the position of all '0' (empty) squares
         let ruledOutOptions;
         //keep track of all numbers that cant be the answer for any given empty square
@@ -116,16 +127,19 @@ class SolvePuzzle extends Component {
                     if (ruledOutOptions.length === 8) {
                         for (var missingNumber = 1; missingNumber < 10; missingNumber++) {
                             if (ruledOutOptions.indexOf(missingNumber) < 0) {
-                                console.log(missingNumber);
                                 board[row][column] = missingNumber;
                                 let puzzleBoard = [[], [], [], [], [], [], [], [], []];
                                 board.map((e, i) => {
                                     return e.map((element, index) => {
+                                        // if (puzzle[i][index].edited) {
+                                        //     return puzzleBoard[i][index] = { value: puzzle[i][index].value, isEditable: true, edited: true }
+                                        // } else {
                                         if (element === 0) {
                                             return puzzleBoard[i][index] = { value: 0, isEditable: true }
                                         } else {
                                             return puzzleBoard[i][index] = { value: element, isEditable: false }
                                         }
+                                        // }
                                     })
                                 })
                                 this.setState({
@@ -136,14 +150,18 @@ class SolvePuzzle extends Component {
                                 return;
                             }
                         }
-                    } else {
+                        // } else {
                         // emptySquares++
+                        // }
                     }
                 }
-                // }
             }
         }
-
+        this.setState({
+            solverModalOpen: true,
+            title: "Bummer, dog.",
+            message: "Looks like you messed up somewhere. It's not my job to fix your mistakes."
+        })
     }
 
     validSolution = (board) => {
@@ -152,11 +170,9 @@ class SolvePuzzle extends Component {
         for (let i = 0; i < tester.length; i++) {
             for (let j = 0; j < tester.length; j++) {
                 if (board[i].indexOf(tester[j]) < 0) {
-                    console.log('row fail')
                     return false;
                 }
                 if (board[j].indexOf(tester[i]) < 0) {
-                    console.log('column fail')
                     return false;
                 }
             }
@@ -180,8 +196,6 @@ class SolvePuzzle extends Component {
     }
 
     render() {
-        console.log("PUZZLE BOARD", this.state.puzzle.board)
-        console.log("sOLUTION", this.state.solution)
         let { puzzle } = this.state;
         return (
 
@@ -192,6 +206,7 @@ class SolvePuzzle extends Component {
                         closeModal={this.closeModal}
                         title={this.state.title}
                         message={this.state.message}
+                        changeView={this.props.changeView}
                     />
                 }
                 <div className="help-bookmark">

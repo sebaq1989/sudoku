@@ -5,7 +5,7 @@ function Modal(props) {
         <div className="modal">
             <h2>{props.title}</h2>
             <h4>{props.message}</h4>
-            <button id="modalClose" onClick={props.closeModal}>Close</button>
+            <button id="modalClose" onClick={props.title === 'Not Quite.' ? () => props.closeModal(false) : () => props.closeModal(true)}>Close</button>
         </div>
     )
 }
