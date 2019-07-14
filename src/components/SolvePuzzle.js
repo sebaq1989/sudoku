@@ -12,6 +12,7 @@ class SolvePuzzle extends Component {
                 board: [],
                 bookmarked: null
             },
+            solveTime: '00:00',
             solverModalOpen: false,
             title: "Dope.",
             message: "You nailed it! Try another puzzle...do it."
@@ -21,6 +22,7 @@ class SolvePuzzle extends Component {
     componentDidMount() {
         axios.get(`/api/puzzles/${this.props.currentId}`).then(response => {
             this.puzzleMapper(response.data)
+            this.setState({ solveTime: '00:00' })
         }).catch(error => {
             console.log('There was an error retrieving the puzzles.');
         })
@@ -107,6 +109,28 @@ class SolvePuzzle extends Component {
     closeModal = (completed) => {
         this.setState({ solverModalOpen: false });
         // completed && this.props.changeView('show');
+    }
+
+    handleBookmark = () => {
+        let d = new Date();
+        let time = d.toLocaleTimeString();
+        let date = d.toLocaleDateString();
+        let puzzle = this.state.puzzle;
+        puzzle.time = time;
+        puzzle.bookmarked = true;
+        puzzle.date = date;
+        puzzle.board = puzzle.board.map(e => e.map(el => el = el.value));
+        console.log(puzzle);
+        axios.post('/api/user', puzzle).then(response => {
+            // this.props.changeView('dashboard');
+            this.setState({
+                user: response.data, solverModalOpen: true, title: "Bookmark added!",
+                message: "You can now access this puzzle from your Dashboard."
+            })
+            // this.props.changeView('show');
+        }).catch(error => console.log(error));
+
+        axios.put(`/api/puzzles/${this.props.currentId}`, { bookmarked: true, solved: false })
     }
 
     sudokuSolver = (puzzle) => {
@@ -237,7 +261,7 @@ class SolvePuzzle extends Component {
                 }
                 <div className="help-bookmark">
                     <button onClick={() => this.sudokuSolver(this.state.puzzle.board)} id="helpMe">Help Me</button>
-                    <button id="bookmarkIt">Bookmark for Later</button>
+                    <button id="bookmark" onClick={this.handleBookmark}>Bookmark this</button>
                 </div>
                 <div className="solvePuzzle">
                     <Board
@@ -248,7 +272,10 @@ class SolvePuzzle extends Component {
                         key={puzzle.id}
                     />
                 </div>
-                <button id="checkSolution" onClick={this.handleSubmit}>Check <br />My Solution</button>
+                <div>
+                    <div id="solveTime"><span id="puzzleTimer">Solve Time</span><span id="timer">{this.state.solveTime}</span></div>
+                    <button id="checkSolution" onClick={this.handleSubmit}>Check <br />My Solution</button>
+                </div>
             </section>
         )
     }

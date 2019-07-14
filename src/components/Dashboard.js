@@ -99,8 +99,13 @@ class Dashboard extends Component {
                                             }
                                         </h4>
                                         <div id="dashButtons">
-                                            <button onClick={() => this.solveBookmarked(element.id)}>Solve it now</button>
-                                            <button onClick={() => this.removeBookmark(element.id)}>Remove bookmark</button>
+                                            {
+                                                this.state.dashView === 'bookmarked' ?
+                                                    <>
+                                                        <button onClick={() => this.solveBookmarked(element.id)}>Solve it now</button>
+                                                        <button onClick={() => this.removeBookmark(element.id)}>Remove bookmark</button> </> :
+                                                    <div id="solvedTime"></div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

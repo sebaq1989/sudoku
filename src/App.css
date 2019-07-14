@@ -121,8 +121,9 @@ header {
 .showPuzzles {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     width: 80vw;
+    height: 43vw;
 }
 
 .showPuzzles .puzzleBoard {
@@ -166,7 +167,7 @@ header {
     height: 50vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin-top: 30px;
 }
@@ -183,7 +184,7 @@ header {
 
 #buttonPuzzle span {
     color: #1ABC9C;
-    font-size: calc(14px + 2vw);
+    font-size: calc(20px + 3vw);
 }
 
 #bookmark {
@@ -261,12 +262,47 @@ header {
     height: 20vh;
     width: 10vw;
     background-color: #1ABC9C;
-    border: 3px solid rgb(66, 66, 66);
+    border: 2px solid rgb(37, 37, 37);
+    color: rgb(53, 53, 53);
     border-radius: 3%;
     font-size: 2vw;
-    color: rgb(228, 228, 228);
-    text-shadow: 1px 1px rgb(66, 66, 66);
+    text-shadow: 1px 1px rgb(21, 129, 108);
     margin: 30px 0;
+}
+
+.solver #solveTime {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    width: 10vw;
+    background-color: #1ABC9C;
+    border: 2px solid rgb(37, 37, 37);
+    color: rgb(53, 53, 53);
+    border-radius: 3%;
+    font-size: 2vw;
+    text-shadow: 1px 1px #1ABC9C;
+    margin: 30px 0;
+}
+
+#checkSolution {
+    background-color: rgb(48, 48, 48);
+    border: 3px solid rgb(69, 223, 192);
+    color: rgb(69, 223, 192);
+
+}
+
+#puzzleTimer {
+    font-size: calc(8px + 1vw);
+    text-align: center;
+}
+
+#timer {
+    font-size: calc(14px + 2.3vw);
+    color: rgb(235, 235, 235);
+    text-shadow: 1px 1px rgb(19, 104, 88);
+    /* font-weight: bold; */
 }
 
 .solvePuzzle input {
@@ -312,6 +348,7 @@ header {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    color: rgb(66, 66, 66);
 }
 
 .dashTabs {
@@ -389,6 +426,16 @@ header {
     height: 8vh;
     width: 14vw;
     margin: 10px 20px;
+}
+
+#dashButtons #solvedTime {
+    width: 20vw;
+    height: 16vh;
+    background: rgb(70, 70, 70);
+    border: 2px solid #1ABC9C;
+    color: rgb(228, 228, 228);
+    border-radius: 10px;
+
 }
 
 .row .emptySquare {

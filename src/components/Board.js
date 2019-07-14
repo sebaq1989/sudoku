@@ -45,6 +45,7 @@ function Board(props) {
                         }
 
                         return <input
+                            autoComplete='off'
                             onChange={e => props.handleChangeSolution(e, index)}
                             className={classes}
                             {...props.displayOnly ? { 'value': squareValue } : { 'defaultValue': squareValue }}
