@@ -8,8 +8,9 @@ class SolvePuzzle extends Component {
         super(props);
         this.state = {
             puzzle: {
-                id: null,
-                board: []
+                id: 0,
+                board: [],
+                bookmarked: null
             },
             solverModalOpen: false,
             title: "Dope.",
@@ -45,9 +46,12 @@ class SolvePuzzle extends Component {
     }
 
     handleChangeSolution = (e, i) => {
-        console.log(this.state.puzzle.board)
+        // console.log(this.state.puzzle.board)
         let puzzleCopy = [...this.state.puzzle.board];
         puzzleCopy[+e.target.name][i].value = (e.target.value * 1);
+        if (!String(puzzleCopy[+e.target.name][i].value).length) {
+            puzzleCopy[+e.target.name][i].value = 0;
+        }
         puzzleCopy[+e.target.name][i].edited = true;
         // console.log("TTTTTTTTTTT", this.state.puzzle.board)
         // this.setState({
@@ -59,6 +63,7 @@ class SolvePuzzle extends Component {
     }
 
     handleSubmit = () => {
+        console.log("alsdkjf;laksjf", this.state.puzzle.id)
         let d = new Date();
         let time = d.toLocaleTimeString();
         let date = d.toLocaleDateString();
@@ -67,17 +72,24 @@ class SolvePuzzle extends Component {
                 return element = element.value
             })
         })
+        console.log("AS;LDKJFA;SLDKFJ", this.state.puzzle.id)
+
         if (this.validSolution(testSolution)) {
             const solvedPuzzle = {
-                id: this.state.puzzle.id,
+                id: this.props.currentId,
                 board: testSolution,
                 solved: true,
                 bookmarked: false,
                 time,
                 date
             }
+
             axios.post('/api/user', solvedPuzzle).then(response => {
-                this.setState({ solverModalOpen: true })
+                this.setState({
+                    solverModalOpen: true,
+                    title: "Dope.",
+                    message: "You nailed it! Try another puzzle...do it."
+                })
             })
             // this.props.changeView('dashboard');
         } else {
@@ -136,12 +148,16 @@ class SolvePuzzle extends Component {
                                         // } else {
                                         if (element === 0) {
                                             return puzzleBoard[i][index] = { value: 0, isEditable: true }
+                                        } else if (puzzle[i][index].isEditable) {
+                                            return puzzleBoard[i][index] = { value: element, isEditable: true, edited: true }
                                         } else {
                                             return puzzleBoard[i][index] = { value: element, isEditable: false }
                                         }
                                         // }
                                     })
                                 })
+
+                                console.log("AKAKAKAKAKAKKKSSSSS", puzzleBoard)
                                 this.setState({
                                     puzzle: {
                                         board: puzzleBoard

@@ -6,7 +6,16 @@ class ShowPuzzles extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            puzzles: [{ board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }, { board: [] }]
+            puzzles: [
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] },
+                { board: [] }]
         }
     }
 
@@ -51,6 +60,28 @@ class ShowPuzzles extends Component {
         this.props.changeView("solve")
     }
 
+    handleBookmark = () => {
+        let d = new Date();
+        let time = d.toLocaleTimeString();
+        let date = d.toLocaleDateString();
+        let board = this.state.puzzles[this.props.currentId - 1].board.map(e => e.map(el => el = el.value))
+        let object = {
+            id: this.props.currentId,
+            board: board,
+            bookmarked: true,
+            solved: false,
+            time,
+            date
+        }
+        console.log(object)
+        axios.post('/api/user', object).then(response => {
+            this.props.changeView('dashboard');
+            this.setState({ user: response.data })
+        }).catch(error => console.log(error));
+
+        axios.put(`/api/puzzles/${this.props.currentId}`, { bookmarked: true, solved: false })
+    }
+
     render() {
         console.log(this.state.puzzles)
         let { puzzles } = this.state
@@ -59,8 +90,11 @@ class ShowPuzzles extends Component {
         console.log(board)
         return (
             <section className="showPuzzles">
+                <div className="showLeftButtons showButtons">
+                    <button id="buttonPuzzle">Puzzle <span>{"#" + puzzle.id}</span></button>
+                    <button className="buttonPrev" onClick={this.handlePrevious}>PREV</button>
 
-                <button className="buttonPrev" onClick={this.handlePrevious}>PREV</button>
+                </div>
                 <div className="puzzles">
                     <Board
                         displayOnly={true}
@@ -70,7 +104,10 @@ class ShowPuzzles extends Component {
                     />
                     <button onClick={this.handlePlay} id="playButton">Play Now</button>
                 </div>
-                <button className="buttonNext" onClick={this.handleNext}>NEXT</button>
+                <div className="showRightButtons showButtons">
+                    <button id="bookmark" onClick={this.handleBookmark}>Bookmark this</button>
+                    <button className="buttonNext" onClick={this.handleNext}>NEXT</button>
+                </div>
 
             </section>
         )

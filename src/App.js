@@ -43,7 +43,7 @@ class App extends Component {
             />
           }
           {this.state.view === 'dashboard' &&
-            <Dashboard />
+            <Dashboard id={this.state.currentId} />
           }
         </main>
       </div>

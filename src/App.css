@@ -97,7 +97,7 @@ header {
 }
 
 .logo {
-    font-size: 3em;
+    font-size: calc(16px + 2vw);
 }
 
 .dank {
@@ -121,7 +121,7 @@ header {
 .showPuzzles {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 80vw;
 }
 
@@ -159,6 +159,37 @@ header {
     border-radius: 5px;
     /* margin-bottom: 35px; */
 
+}
+
+.showButtons {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+#buttonPuzzle {
+    height: 20vh;
+    background-color: rgb(107, 107, 107);
+    border: 3px solid rgb(37, 37, 37);
+    border-radius: 8px;
+    color: rgb(228, 228, 228);
+    text-shadow: 2px 1px rgb(37, 37, 37);
+}
+
+#buttonPuzzle span {
+    color: #1ABC9C;
+    font-size: 3vw;
+}
+
+#bookmark {
+    height: 20vh;
+    background-color: #1ABC9C;
+    border: 3px solid rgb(53, 53, 53);
+    border-radius: 8px;
+    color: rgb(228, 228, 228);
 }
 
 .puzzles {
@@ -255,6 +286,7 @@ header {
 
 #dashboard {
     height: fit-content;
+    min-height: 30vh;
     width: 80vw;
     background-color: rgb(245, 245, 245);
     display: flex;
@@ -268,10 +300,14 @@ header {
     /* border: 1px solid rgb(187, 187, 187); */
 }
 
-/* .dashboardContent {
+.dashboardContent {
+    height: 40vh;
     width: 40%;
-    height: 100%;
-} */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
 
 .dashTabs {
     /* margin-left: 30px; */
@@ -281,7 +317,7 @@ header {
 .tab {
     height: 40px;
     padding: 10px 20px;
-    font-size: 1em;
+    font-size: calc(8px + .8vw);
     background-color: rgb(245, 245, 245);
     /* border: 1px solid rgb(187, 187, 187); */
     /* border-bottom: 2px solid rgb(245, 245, 245); */
@@ -301,23 +337,27 @@ header {
 }
 
 .solved-bookmarked {
-    width: 100%;
+    width: 84%;
     height: fit-content;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: row;
-    margin: 30px;
+    margin: 5vh 0;
     text-align: center;
+    padding: 2vh 3%;
+    border: 1px solid rgb(173, 173, 173);
+    border-radius: 10px;
+    color: rgb(53, 53, 53);
 }
 
 .solved-bookmarked h2 {
-    font-size: 2.5vw;
+    font-size: calc(14px + 2.2vw);
     font-weight: bold;
 }
 
 .solved-bookmarked h4 {
-    font-size: 1.6vw;
+    font-size: calc(10px + 1vw);
 }
 
 #dashboard .puzzleBoard input {
@@ -329,6 +369,21 @@ header {
 #dashboard .puzzleBoard {
     border-bottom-left-radius: 2%;
     border-bottom-right-radius: 2%;
+}
+
+#dashButtons {
+    color: rgb(228, 228, 228);
+}
+
+#dashButtons button {
+    background: rgb(70, 70, 70);
+    border: 2px solid #1ABC9C;
+    border-radius: 7px;
+    font-size: 1.2vw;
+    font-weight: bold;
+    height: 8vh;
+    width: 14vw;
+    margin: 10px 20px;
 }
 
 .row .emptySquare {

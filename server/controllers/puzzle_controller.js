@@ -13,8 +13,10 @@ const getPuzzle = (req, res) => {
 
 const editPuzzle = (req, res) => {
     let { id } = req.params;
+    let { bookmarked, solved } = req.body;
     let foundIndex = puzzles.findIndex(e => e.id == id);
-    puzzles[foundIndex] = { id, board: req.body.board };
+    puzzles[foundIndex].bookmarked = bookmarked;
+    puzzles[foundIndex].solved = solved;
     res.send(puzzles);
 }
 
