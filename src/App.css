@@ -132,6 +132,7 @@ header {
 .showPuzzles button {
     height: 5vw;
     min-height: 40px;
+    min-width: 80px;
     width: 10vw;
     border: none;
     background-color: #1ABC9C;
@@ -172,24 +173,27 @@ header {
 
 #buttonPuzzle {
     height: 20vh;
-    background-color: rgb(107, 107, 107);
-    border: 3px solid rgb(37, 37, 37);
+    background-color: rgb(37, 37, 37);
+    border: 2px solid #1ABC9C;
     border-radius: 8px;
     color: rgb(228, 228, 228);
     text-shadow: 2px 1px rgb(37, 37, 37);
+    font-size: calc(8px + 1.4vw)
 }
 
 #buttonPuzzle span {
     color: #1ABC9C;
-    font-size: 3vw;
+    font-size: calc(14px + 2vw);
 }
 
 #bookmark {
     height: 20vh;
     background-color: #1ABC9C;
-    border: 3px solid rgb(53, 53, 53);
+    border: 2px solid rgb(53, 53, 53);
     border-radius: 8px;
     color: rgb(228, 228, 228);
+    text-align: center;
+    font-size: calc(8px + 1vw);
 }
 
 .puzzles {
@@ -277,6 +281,7 @@ header {
 }
 
 .help-bookmark {
+    /* height: 100%; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;

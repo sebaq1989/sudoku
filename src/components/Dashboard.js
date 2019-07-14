@@ -13,13 +13,14 @@ class Dashboard extends Component {
 
     componentDidMount = () => {
         axios.get('/api/user').then(response => {
-            this.puzzleMapper(response.data)
+            if (response.data.length > 0) {
+                this.puzzleMapper(response.data);
+            }
         }).catch(error => console.log(error));
     }
 
     puzzleMapper = (data) => {
         let puzzlesArray = [...data];
-        console.log(puzzlesArray)
         puzzlesArray.map((el, ind) => {
             let puzzleBoard = [[], [], [], [], [], [], [], [], []];
             el.board.map((e, i) => {
@@ -50,6 +51,11 @@ class Dashboard extends Component {
             this.puzzleMapper(response.data);
             this.setState({ user: response.data })
         }).catch(error => console.log(error))
+    }
+
+    solveBookmarked = (id) => {
+        this.props.changeId(id);
+        this.props.changeView('solve');
     }
 
     render() {
@@ -93,7 +99,7 @@ class Dashboard extends Component {
                                             }
                                         </h4>
                                         <div id="dashButtons">
-                                            <button>Solve it now</button>
+                                            <button onClick={() => this.solveBookmarked(element.id)}>Solve it now</button>
                                             <button onClick={() => this.removeBookmark(element.id)}>Remove bookmark</button>
                                         </div>
                                     </div>

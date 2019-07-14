@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
+import Modal from './Modal';
 import axios from 'axios';
 
 class ShowPuzzles extends Component {
@@ -15,14 +16,16 @@ class ShowPuzzles extends Component {
                 { board: [] },
                 { board: [] },
                 { board: [] },
-                { board: [] }]
+                { board: [] }],
+            modalOpen: false,
+            title: "Bookmark added!",
+            message: "You can now access this puzzle from your Dashboard."
         }
     }
 
     componentDidMount() {
         axios.get('/api/puzzles').then(response => {
             let puzzlesArray = [...response.data];
-            console.log(response.data)
             puzzlesArray.map((el, ind) => {
                 let puzzleBoard = [[], [], [], [], [], [], [], [], []];
                 el.board.map((e, i) => {
@@ -73,23 +76,33 @@ class ShowPuzzles extends Component {
             time,
             date
         }
-        console.log(object)
         axios.post('/api/user', object).then(response => {
-            this.props.changeView('dashboard');
-            this.setState({ user: response.data })
+            // this.props.changeView('dashboard');
+            this.setState({ user: response.data, modalOpen: true })
         }).catch(error => console.log(error));
 
         axios.put(`/api/puzzles/${this.props.currentId}`, { bookmarked: true, solved: false })
     }
 
+    closeModal = (completed) => {
+        this.setState({ modalOpen: false });
+    }
+
     render() {
-        console.log(this.state.puzzles)
         let { puzzles } = this.state
         let puzzle = puzzles[this.props.currentId - 1]
         let board = puzzle.board
-        console.log(board)
         return (
             <section className="showPuzzles">
+                {this.state.modalOpen &&
+                    <Modal
+                        className="modal"
+                        closeModal={this.closeModal}
+                        title={this.state.title}
+                        message={this.state.message}
+                        changeView={this.props.changeView}
+                    />
+                }
                 <div className="showLeftButtons showButtons">
                     <button id="buttonPuzzle">Puzzle <span>{"#" + puzzle.id}</span></button>
                     <button className="buttonPrev" onClick={this.handlePrevious}>PREV</button>

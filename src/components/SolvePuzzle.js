@@ -20,25 +20,32 @@ class SolvePuzzle extends Component {
 
     componentDidMount() {
         axios.get(`/api/puzzles/${this.props.currentId}`).then(response => {
-            let puzzleBoard = [[], [], [], [], [], [], [], [], []];
-            response.data.board.map((e, i) => {
-                return e.map((element, index) => {
-                    if (element === 0) {
-                        return puzzleBoard[i][index] = { value: 0, isEditable: true }
-                    } else {
-                        return puzzleBoard[i][index] = { value: element, isEditable: false }
-                    }
-                })
-            })
-            this.setState({
-                puzzle: {
-                    id: this.props.currentId,
-                    board: puzzleBoard
-                }
-            });
+            this.puzzleMapper(response.data)
         }).catch(error => {
             console.log('There was an error retrieving the puzzles.');
         })
+    }
+
+    puzzleMapper = (data) => {
+        let puzzleBoard = [[], [], [], [], [], [], [], [], []];
+        data.board.map((e, i) => {
+            return e.map((element, index) => {
+                if (element === 0) {
+                    return puzzleBoard[i][index] = { value: 0, isEditable: true }
+                } else {
+                    return puzzleBoard[i][index] = { value: element, isEditable: false }
+                }
+            })
+        })
+        let bookmarked;
+        data.bookmarked ? bookmarked = true : bookmarked = false;
+        this.setState({
+            puzzle: {
+                id: this.props.currentId,
+                board: puzzleBoard,
+                bookmarked
+            }
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -93,7 +100,7 @@ class SolvePuzzle extends Component {
             })
             // this.props.changeView('dashboard');
         } else {
-            this.setState({ title: "Not Quite.", message: "Your solution isn't valid. Keep trying!", solverModalOpen: true })
+            this.setState({ title: "Nah, bruh.", message: "Not even close...", solverModalOpen: true })
         }
     }
 
@@ -108,14 +115,15 @@ class SolvePuzzle extends Component {
         //keep track of the position of all '0' (empty) squares
         let ruledOutOptions;
         //keep track of all numbers that cant be the answer for any given empty square
-        // let emptySquares = 1;
+        let emptySquares = 1;
         //keep looping through the rest of the logic until we dont see any empty squares
         // while (emptySquares > 0) {
-        // emptySquares = 0;
+        emptySquares = 0;
         for (var row = 0; row < board.length; row++) {
             for (var column = 0; column < board.length; column++) {
                 let filledSquares = {};
                 if (board[row][column] === 0) {
+                    emptySquares = 1;
                     for (var i = 0; i < 9; i++) {
                         //check row for filled boxes
                         if (board[row][i] > 0) {
@@ -173,11 +181,13 @@ class SolvePuzzle extends Component {
                 }
             }
         }
-        this.setState({
-            solverModalOpen: true,
-            title: "Bummer, dog.",
-            message: "Looks like you messed up somewhere. It's not my job to fix your mistakes."
-        })
+        if (emptySquares > 0) {
+            this.setState({
+                solverModalOpen: true,
+                title: "Bummer, dog.",
+                message: "Looks like you messed up somewhere. It's not my job to fix your mistakes."
+            })
+        }
     }
 
     validSolution = (board) => {
