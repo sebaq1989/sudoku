@@ -16,7 +16,11 @@ class App extends Component {
   }
 
   changeView = (view) => {
-    this.setState({ view })
+    if (view === 'show') {
+      this.setState({ view, currentId: 1 })
+    } else {
+      this.setState({ view })
+    }
   }
 
   changeId = (id) => {

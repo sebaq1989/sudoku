@@ -5,8 +5,7 @@ function Header(props) {
         <header>
             <div className="headerWrapper">
                 <div className="logo">
-                    {/* <img src="" alt="" /> */}
-                    <h2>Su<span className="dank">dank</span>u</h2>
+                    <h2 onClick={() => props.changeView('show')}>Su<span className="dank">dank</span>u</h2>
                 </div>
                 <div className="buttonWrapper">
                     <button onClick={() => props.changeView('show')}>Puzzles</button>

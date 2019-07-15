@@ -13,7 +13,6 @@ class Dashboard extends Component {
 
     componentDidMount = () => {
         axios.get('/api/user').then(response => {
-            console.log(response.data)
             if (response.data.length > 0) {
                 this.puzzleMapper(response.data);
             }
@@ -43,11 +42,6 @@ class Dashboard extends Component {
     }
 
     removeBookmark = (id) => {
-        // let puzzle = this.state.user[id];
-        // console.log(puzzle)
-        // puzzle.board.map(e => e = e.value);
-        // puzzle.bookmarked = false;
-        // console.log(puzzle)
         axios.delete(`/api/user/${id}`).then(response => {
             this.puzzleMapper(response.data);
             this.setState({ user: response.data })
@@ -60,8 +54,6 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log(this.state.user.seconds)
-
         return (
             <section>
                 <div className="dashTabs">
@@ -77,11 +69,6 @@ class Dashboard extends Component {
                     </button>
                 </div>
                 <div id="dashboard">
-                    {/* {this.state.user.length === 0 ?
-                        <h2>You don't have any Bookmarked puzzles.</h2> :
-                        null
-
-                    } */}
                     {this.state.user.map((element, index) => {
                         return element[this.state.dashView] &&
                             (
@@ -107,11 +94,22 @@ class Dashboard extends Component {
                                                     <>
                                                         <button onClick={() => this.solveBookmarked(element.id)}>Solve it now</button>
                                                         <button onClick={() => this.removeBookmark(element.id)}>Remove bookmark</button> </> :
-                                                    <div id="solvedTime">
-                                                        <h3>Solve Time:</h3>
-                                                        <br />
-                                                        <h1>{element.solveTime}</h1>
-                                                    </div>
+                                                    <>
+                                                        {
+                                                            element.helpCount > 0 ?
+                                                                element.helpCount === 1 ?
+                                                                    <h4>You cheated <strong>1</strong> time (help button)</h4> :
+                                                                    <h4>You cheated <strong>{element.helpCount}</strong> times (help button)</h4> :
+                                                                <h4>You didnt need any help! Noice!</h4>
+                                                        }
+                                                        <div id="solvedTime">
+                                                            <h3>Solve Time:</h3>
+                                                            <br />
+                                                            <h1>{element.solveTime}</h1>
+
+                                                        </div>
+
+                                                    </>
                                             }
                                         </div>
                                     </div>

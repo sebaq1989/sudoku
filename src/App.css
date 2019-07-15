@@ -1,12 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Josefin+Slab:700&display=swap');
-
-
 body {
     display: flex;
     justify-content: center;
     background-color: rgb(228, 228, 228);
     overflow-x: hidden;
-    /* font-family: 'Josefin Slab', serif; */
 }
 
 button {
@@ -38,10 +34,6 @@ button {
     font-size: 3.8vw;
     color: rgb(21, 129, 108);
 }
-
-/* #dope {
-    color: #1ABC9C;
-} */
 
 .modal h4 {
     font-size: 1.6vw;
@@ -87,6 +79,7 @@ header {
     min-width: fit-content;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .buttonWrapper button {
@@ -98,11 +91,26 @@ header {
 
 .logo {
     font-size: calc(16px + 2vw);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.logo h2 {
+    line-height: .7em;
+}
+
+.logo h6 {
+    font-size: calc(6px + .8vw);
+    line-height: 1em;
+    letter-spacing: .16em;
+    color: #1ABC9C;
 }
 
 .dank {
     color: #1ABC9C;
-    /* font-size: 0.9em; */
 }
 
 .puzzleBoard {
@@ -126,10 +134,6 @@ header {
     height: 43vw;
 }
 
-.showPuzzles .puzzleBoard {
-    /* margin-top: 2vw; */
-}
-
 .showPuzzles button {
     height: 5vw;
     min-height: 40px;
@@ -150,7 +154,6 @@ header {
     -webkit-clip-path: polygon(25% 0%, 100% 1%, 100% 100%, 25% 100%, 0% 50%);
     clip-path: polygon(25% 0%, 100% 1%, 100% 100%, 25% 100%, 0% 50%);
     border-radius: 5px;
-    /* margin-bottom: 35px; */
 }
 
 .buttonNext {
@@ -159,7 +162,6 @@ header {
     -webkit-clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
     clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
     border-radius: 5px;
-    /* margin-bottom: 35px; */
 
 }
 
@@ -211,7 +213,7 @@ header {
     border: none;
     background-color: #1ABC9C;
     font-weight: bold;
-    font-size: calc(10px + 1.2vw);
+    font-size: calc(16px + 2vw);
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     margin-top: 0;
@@ -225,8 +227,6 @@ header {
 }
 
 .puzzleBoard .row {
-    /* height: 11%; */
-    /* width: 100%; */
     display: flex;
     justify-content: center;
 
@@ -235,8 +235,6 @@ header {
 .row input {
     height: 4vw;
     width: 5vw;
-    /* min-height: 37px;
-    min-width: 41px; */
     font-size: 1.8vw;
     font-size: calc(16px + 1.5vw);
     text-align: center;
@@ -247,7 +245,6 @@ header {
 
 .solvePuzzle .puzzleBoard {
     border-radius: 2%;
-    /* margin: 30px 0; */
 }
 
 .solver {
@@ -302,7 +299,6 @@ header {
     font-size: calc(14px + 2.3vw);
     color: rgb(235, 235, 235);
     text-shadow: 1px 1px rgb(19, 104, 88);
-    /* font-weight: bold; */
 }
 
 .solvePuzzle input {
@@ -317,7 +313,6 @@ header {
 }
 
 .help-bookmark {
-    /* height: 100%; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -338,12 +333,11 @@ header {
     border-top-right-radius: 2%;
     border-bottom-left-radius: 2%;
     border-bottom-right-radius: 2%;
-    /* border: 1px solid rgb(187, 187, 187); */
 }
 
 .dashboardContent {
     height: 40vh;
-    width: 40%;
+    width: 45%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -356,23 +350,14 @@ header {
     font-size: calc(16px + 2.6vw)
 }
 
-.dashTabs {
-    /* margin-left: 30px; */
-    /* height: 41px; */
-}
-
 .tab {
     height: 40px;
     padding: 10px 20px;
     font-size: calc(8px + .8vw);
     background-color: rgb(245, 245, 245);
-    /* border: 1px solid rgb(187, 187, 187); */
-    /* border-bottom: 2px solid rgb(245, 245, 245); */
     border: none;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
-    /* margin-right: -5px; */
-    /* margin-bottom: -3px; */
     z-index: -1;
     color: rgb(82, 82, 82);
     font-weight: bold;
@@ -404,7 +389,7 @@ header {
 }
 
 .solved-bookmarked h4 {
-    font-size: calc(10px + 1vw);
+    font-size: calc(12px + 1vw);
 }
 
 #dashboard .puzzleBoard input {
@@ -419,7 +404,16 @@ header {
 }
 
 #dashButtons {
+    height: 21vh;
     color: rgb(228, 228, 228);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#dashButtons strong {
+    font-weight: bold;
 }
 
 #dashButtons button {
@@ -448,13 +442,19 @@ header {
 
 #solvedTime h3 {
     font-size: calc(14px + 1vw);
+    line-height: 1vh;
 }
 
 #solvedTime h1 {
-    font-size: calc(20px + 4vw);
+    font-size: calc(20px + 4.2vw);
     letter-spacing: 4px;
     color: #1ABC9C;
+    line-height: 8vh;
+}
 
+#dashButtons h4 {
+    font-size: calc(12px + .8vw);
+    color: rgb(53, 53, 53);
 }
 
 .row .emptySquare {

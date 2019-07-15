@@ -6,7 +6,6 @@ const getPuzzles = (req, res) => {
 
 const getPuzzlesByCategory = (req, res) => {
     let category = req.params.category;
-    console.log(req.params.category)
     let filtered;
     if (category === "bookmarked" || category === "solved") {
         filtered = user.filter(e => e[String(category)] === true)
@@ -22,7 +21,7 @@ const deletePuzzle = (req, res) => {
 }
 
 const addPuzzle = (req, res) => {
-    let { board, id, solved, bookmarked, time, date, solveTime } = req.body;
+    let { board, id, solved, bookmarked, time, date, solveTime, helpCount } = req.body;
     let userDup = user.findIndex(e => e.id === id);
     if (userDup !== -1) {
         user.splice(userDup, 1)
@@ -35,17 +34,18 @@ const addPuzzle = (req, res) => {
         deletePuzzle,
         time,
         date,
-        solveTime
+        solveTime,
+        helpCount
     })
     res.send(user)
 }
 
 const editPuzzle = (req, res) => {
-    let { board, id, solved, bookmarked } = req.body;
+    let { board, id, solved, bookmarked, time, date, } = req.body;
     let editId = req.params.id
     let foundIndex = user.findIndex(e => e.id === +editId);
     let edittedObject = {
-        board, id, solved, bookmarked
+        board, id, solved, bookmarked, time, date
     }
     user.splice(foundIndex, 1, edittedObject);
     res.send(user);

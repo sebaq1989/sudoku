@@ -13,8 +13,9 @@ class SolvePuzzle extends Component {
                 board: [],
                 bookmarked: null
             },
-            seconds: 0,
+            solveTime: '',
             timerOn: true,
+            helpCount: 0,
             solverModalOpen: false,
             title: "Dope.",
             message: "You nailed it! Try another puzzle...do it."
@@ -53,12 +54,7 @@ class SolvePuzzle extends Component {
         });
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        // console.log(prevState, this.state)
-    }
-
     handleChangeSolution = (e, i) => {
-        // console.log(this.state.puzzle.board)
         let puzzleCopy = [...this.state.puzzle.board];
         puzzleCopy[+e.target.name][i].value = (e.target.value * 1);
         if (!String(puzzleCopy[+e.target.name][i].value).length) {
@@ -66,12 +62,6 @@ class SolvePuzzle extends Component {
         }
         puzzleCopy[+e.target.name][i].edited = true;
         console.log("TTTTTTTTTTT", this.state.puzzle.board)
-        // this.setState({
-        //     puzzle: {
-        //         board: puzzleCopy
-        //     }
-        // })
-        // this.setState({ puzzle: { board: puzzleCopy } })
     }
 
     handleSubmit = () => {
@@ -79,15 +69,12 @@ class SolvePuzzle extends Component {
         let d = new Date();
         let time = d.toLocaleTimeString();
         let date = d.toLocaleDateString();
-        let minutes = ("0" + Math.floor((this.state.seconds * 1) / 60)).slice(-2);
-        let seconds = ("0" + (this.state.seconds * 1) % 60).slice(-2);
-        let solveTime = minutes + ':' + seconds;
         let testSolution = this.state.puzzle.board.map((e, i) => {
             return e.map((element, index) => {
                 return element = element.value
             })
         })
-        console.log("AS;LDKJFA;SLDKFJ", this.state.puzzle.id)
+        console.log(this.state.seconds)
 
         if (this.validSolution(testSolution)) {
             const solvedPuzzle = {
@@ -97,7 +84,8 @@ class SolvePuzzle extends Component {
                 bookmarked: false,
                 time,
                 date,
-                solveTime
+                solveTime: this.state.solveTime,
+                helpCount: this.state.helpCount
             }
 
             axios.post('/api/user', solvedPuzzle).then(response => {
@@ -108,7 +96,6 @@ class SolvePuzzle extends Component {
                     timerOn: false
                 })
             })
-            // this.props.changeView('dashboard');
         } else {
             this.setState({ title: "Nah, bruh.", message: "Not even close...", solverModalOpen: true })
         }
@@ -116,7 +103,6 @@ class SolvePuzzle extends Component {
 
     closeModal = (completed) => {
         this.setState({ solverModalOpen: false });
-        // completed && this.props.changeView('show');
     }
 
     handleBookmark = () => {
@@ -130,36 +116,28 @@ class SolvePuzzle extends Component {
         puzzle.board = puzzle.board.map(e => e.map(el => el = el.value));
         console.log(puzzle);
         axios.post('/api/user', puzzle).then(response => {
-            // this.props.changeView('dashboard');
             this.setState({
                 user: response.data, solverModalOpen: true, title: "Bookmark added!",
                 message: "You can now access this puzzle from your Dashboard."
             })
-            // this.props.changeView('show');
         }).catch(error => console.log(error));
 
         axios.put(`/api/puzzles/${this.props.currentId}`, { bookmarked: true, solved: false })
     }
 
-    timerCount = (seconds) => {
-        let mins = Math.floor(seconds / 60);
-        let secs = (seconds % 60);
-        mins = ("0" + mins).slice(-2);
-        secs = ("0" + secs).slice(-2);
+    timerCount = (time) => {
         this.setState({
-            minutes: mins, seconds: secs
+            solveTime: time
         })
     }
 
     sudokuSolver = (puzzle) => {
+        this.setState({ helpCount: this.state.helpCount + 1 });
         let board = puzzle.map(e => e.map(a => a = a.value));
-        console.log("kkkkkkkkkkkkk", this.state.puzzle.board)
         //keep track of the position of all '0' (empty) squares
         let ruledOutOptions;
         //keep track of all numbers that cant be the answer for any given empty square
         let emptySquares = 1;
-        //keep looping through the rest of the logic until we dont see any empty squares
-        // while (emptySquares > 0) {
         emptySquares = 0;
         for (var row = 0; row < board.length; row++) {
             for (var column = 0; column < board.length; column++) {
@@ -193,9 +171,6 @@ class SolvePuzzle extends Component {
                                 let puzzleBoard = [[], [], [], [], [], [], [], [], []];
                                 board.map((e, i) => {
                                     return e.map((element, index) => {
-                                        // if (puzzle[i][index].edited) {
-                                        //     return puzzleBoard[i][index] = { value: puzzle[i][index].value, isEditable: true, edited: true }
-                                        // } else {
                                         if (element === 0) {
                                             return puzzleBoard[i][index] = { value: 0, isEditable: true }
                                         } else if (puzzle[i][index].isEditable) {
@@ -203,22 +178,17 @@ class SolvePuzzle extends Component {
                                         } else {
                                             return puzzleBoard[i][index] = { value: element, isEditable: false }
                                         }
-                                        // }
                                     })
                                 })
-
-                                console.log("AKAKAKAKAKAKKKSSSSS", puzzleBoard)
                                 this.setState({
                                     puzzle: {
-                                        board: puzzleBoard
+                                        board: puzzleBoard,
+                                        helpCount: this.state.helpCount + 1
                                     }
                                 })
                                 return;
                             }
                         }
-                        // } else {
-                        // emptySquares++
-                        // }
                     }
                 }
             }

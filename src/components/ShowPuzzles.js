@@ -77,7 +77,6 @@ class ShowPuzzles extends Component {
             date
         }
         axios.post('/api/user', object).then(response => {
-            // this.props.changeView('dashboard');
             this.setState({ user: response.data, modalOpen: true })
         }).catch(error => console.log(error));
 

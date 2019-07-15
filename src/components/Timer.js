@@ -23,7 +23,9 @@ class Timer extends Component {
                 seconds: (prevState.seconds + 1) % 60,
                 minutes: this.state.minutes + Math.floor((prevState.seconds + 1) / 60) * 1
             }))
-            this.props.timerCount(this.state.seconds)
+            let mins = ('0' + (this.state.minutes)).slice(-2);
+            let secs = ('0' + (this.state.seconds)).slice(-2);
+            this.props.timerCount(`${mins}:${secs}`)
         }, 1000)
     }
 
