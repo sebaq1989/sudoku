@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Board from './Board';
 import Modal from './Modal';
+import Timer from './Timer';
 
 class SolvePuzzle extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ class SolvePuzzle extends Component {
                 board: [],
                 bookmarked: null
             },
-            solveTime: '00:00',
+            seconds: 0,
+            timerOn: true,
             solverModalOpen: false,
             title: "Dope.",
             message: "You nailed it! Try another puzzle...do it."
@@ -26,6 +28,7 @@ class SolvePuzzle extends Component {
         }).catch(error => {
             console.log('There was an error retrieving the puzzles.');
         })
+
     }
 
     puzzleMapper = (data) => {
@@ -62,7 +65,7 @@ class SolvePuzzle extends Component {
             puzzleCopy[+e.target.name][i].value = 0;
         }
         puzzleCopy[+e.target.name][i].edited = true;
-        // console.log("TTTTTTTTTTT", this.state.puzzle.board)
+        console.log("TTTTTTTTTTT", this.state.puzzle.board)
         // this.setState({
         //     puzzle: {
         //         board: puzzleCopy
@@ -76,6 +79,9 @@ class SolvePuzzle extends Component {
         let d = new Date();
         let time = d.toLocaleTimeString();
         let date = d.toLocaleDateString();
+        let minutes = ("0" + Math.floor((this.state.seconds * 1) / 60)).slice(-2);
+        let seconds = ("0" + (this.state.seconds * 1) % 60).slice(-2);
+        let solveTime = minutes + ':' + seconds;
         let testSolution = this.state.puzzle.board.map((e, i) => {
             return e.map((element, index) => {
                 return element = element.value
@@ -90,14 +96,16 @@ class SolvePuzzle extends Component {
                 solved: true,
                 bookmarked: false,
                 time,
-                date
+                date,
+                solveTime
             }
 
             axios.post('/api/user', solvedPuzzle).then(response => {
                 this.setState({
                     solverModalOpen: true,
                     title: "Dope.",
-                    message: "You nailed it! Try another puzzle...do it."
+                    message: "You nailed it! Try another puzzle...do it.",
+                    timerOn: false
                 })
             })
             // this.props.changeView('dashboard');
@@ -131,6 +139,16 @@ class SolvePuzzle extends Component {
         }).catch(error => console.log(error));
 
         axios.put(`/api/puzzles/${this.props.currentId}`, { bookmarked: true, solved: false })
+    }
+
+    timerCount = (seconds) => {
+        let mins = Math.floor(seconds / 60);
+        let secs = (seconds % 60);
+        mins = ("0" + mins).slice(-2);
+        secs = ("0" + secs).slice(-2);
+        this.setState({
+            minutes: mins, seconds: secs
+        })
     }
 
     sudokuSolver = (puzzle) => {
@@ -261,7 +279,7 @@ class SolvePuzzle extends Component {
                 }
                 <div className="help-bookmark">
                     <button onClick={() => this.sudokuSolver(this.state.puzzle.board)} id="helpMe">Help Me</button>
-                    <button id="bookmark" onClick={this.handleBookmark}>Bookmark this</button>
+                    <button id="solverBookmark" onClick={this.handleBookmark}>Bookmark this</button>
                 </div>
                 <div className="solvePuzzle">
                     <Board
@@ -273,7 +291,12 @@ class SolvePuzzle extends Component {
                     />
                 </div>
                 <div>
-                    <div id="solveTime"><span id="puzzleTimer">Solve Time</span><span id="timer">{this.state.solveTime}</span></div>
+                    <div id="solveTime">
+                        <span id="puzzleTimer">Solve Time</span>
+                        <span id="timer">
+                            <Timer timerCount={this.timerCount} timerOn={this.state.timerOn} startCount={0} />
+                        </span>
+                    </div>
                     <button id="checkSolution" onClick={this.handleSubmit}>Check <br />My Solution</button>
                 </div>
             </section>

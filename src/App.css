@@ -351,6 +351,11 @@ header {
     color: rgb(66, 66, 66);
 }
 
+#puzzleNumber {
+    color: #1ABC9C;
+    font-size: calc(16px + 2.6vw)
+}
+
 .dashTabs {
     /* margin-left: 30px; */
     /* height: 41px; */
@@ -435,6 +440,20 @@ header {
     border: 2px solid #1ABC9C;
     color: rgb(228, 228, 228);
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#solvedTime h3 {
+    font-size: calc(14px + 1vw);
+}
+
+#solvedTime h1 {
+    font-size: calc(20px + 4vw);
+    letter-spacing: 4px;
+    color: #1ABC9C;
 
 }
 

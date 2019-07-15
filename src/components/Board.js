@@ -2,16 +2,6 @@ import React from 'react';
 
 function Board(props) {
 
-    // handleChange = (e, i) => {
-    //     let puzzleCopy = [...props.solution];
-    //     puzzleCopy[e.target.name][i] = (e.target.value * 1);
-    //     props.handleChangeSolution(puzzleCopy);
-    // }
-
-    // handleClick = () => {
-    //     this.props.handleSubmit(this.state.checkSolution);
-    // }
-
     return (
         < div className="puzzleBoard" id={props.isEditable ? "solvePuzzle" : null} >
 

@@ -13,6 +13,7 @@ class Dashboard extends Component {
 
     componentDidMount = () => {
         axios.get('/api/user').then(response => {
+            console.log(response.data)
             if (response.data.length > 0) {
                 this.puzzleMapper(response.data);
             }
@@ -59,9 +60,11 @@ class Dashboard extends Component {
     }
 
     render() {
+        console.log(this.state.user.seconds)
+
         return (
-            <div>
-                <section className="dashTabs">
+            <section>
+                <div className="dashTabs">
                     <button
                         className={this.state.dashView === 'bookmarked' ? "tab" : "tab unfocusedTab"}
                         onClick={() => this.changeDashView('bookmarked')}>
@@ -72,8 +75,8 @@ class Dashboard extends Component {
                         onClick={() => this.changeDashView('solved')}>
                         Solved Puzzles
                     </button>
-                </section>
-                <section id="dashboard">
+                </div>
+                <div id="dashboard">
                     {/* {this.state.user.length === 0 ?
                         <h2>You don't have any Bookmarked puzzles.</h2> :
                         null
@@ -90,7 +93,7 @@ class Dashboard extends Component {
                                         key={element.id}
                                     />
                                     <div key={Math.floor(Math.random() * 7777)} className="dashboardContent">
-                                        <h2>Puzzle #{element.id}</h2>
+                                        <h2>Puzzle <span id="puzzleNumber">#{element.id}</span></h2>
                                         <h4>
                                             {
                                                 this.state.dashView === 'bookmarked' ?
@@ -104,15 +107,19 @@ class Dashboard extends Component {
                                                     <>
                                                         <button onClick={() => this.solveBookmarked(element.id)}>Solve it now</button>
                                                         <button onClick={() => this.removeBookmark(element.id)}>Remove bookmark</button> </> :
-                                                    <div id="solvedTime"></div>
+                                                    <div id="solvedTime">
+                                                        <h3>Solve Time:</h3>
+                                                        <br />
+                                                        <h1>{element.solveTime}</h1>
+                                                    </div>
                                             }
                                         </div>
                                     </div>
                                 </div>
                             )
                     })}
-                </section>
-            </div>
+                </div>
+            </section>
         )
     }
 }

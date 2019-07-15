@@ -1,59 +1,4 @@
-const user = [
-    // {
-    //     "id": 1,
-    //     "board": [
-    //         [5, 3, 1, 0, 7, 0, 0, 0, 0],
-    //         [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    //         [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    //         [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    //         [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    //         [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    //         [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    //         [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    //         [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    //     ],
-    //     "solved": true,
-    //     "bookmarked": true,
-    //     "time": '2:53 PM',
-    //     "date": '07/12/2019'
-    // },
-    // {
-    //     "id": 2,
-    //     "board": [
-    //         [5, 3, 2, 0, 7, 0, 0, 0, 0],
-    //         [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    //         [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    //         [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    //         [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    //         [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    //         [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    //         [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    //         [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    //     ],
-    //     "solved": false,
-    //     "bookmarked": true,
-    //     "time": '7:32 PM',
-    //     "date": '07/09/2019'
-    // },
-    // {
-    //     "id": 3,
-    //     "board": [
-    //         [5, 3, 3, 0, 7, 0, 0, 0, 0],
-    //         [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    //         [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    //         [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    //         [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    //         [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    //         [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    //         [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    //         [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    //     ],
-    //     "solved": true,
-    //     "bookmarked": false,
-    //     "time": '4:07 AM',
-    //     "date": '07/11/2019'
-    // }
-];
+const user = [];
 
 const getPuzzles = (req, res) => {
     res.send(user)
@@ -77,7 +22,7 @@ const deletePuzzle = (req, res) => {
 }
 
 const addPuzzle = (req, res) => {
-    let { board, id, solved, bookmarked, time, date } = req.body;
+    let { board, id, solved, bookmarked, time, date, solveTime } = req.body;
     let userDup = user.findIndex(e => e.id === id);
     if (userDup !== -1) {
         user.splice(userDup, 1)
@@ -89,7 +34,8 @@ const addPuzzle = (req, res) => {
         bookmarked,
         deletePuzzle,
         time,
-        date
+        date,
+        solveTime
     })
     res.send(user)
 }
