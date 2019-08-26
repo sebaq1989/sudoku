@@ -118,7 +118,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 3px solid #1ABC9C;
+    border: 5px solid #1ABC9C;
     border-top-right-radius: 2%;
     border-top-left-radius: 2%;
     overflow: hidden;
