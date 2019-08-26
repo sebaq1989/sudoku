@@ -19,5 +19,5 @@ app.put("/api/user/:id", uc.editPuzzle);
 app.post("/api/user", uc.addPuzzle);
 app.delete("/api/user/:id", uc.deletePuzzle);
 
-const PORT = 7070;
+const PORT = 7077;
 app.listen(PORT, () => console.log("Listening on port " + PORT));
